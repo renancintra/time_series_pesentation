@@ -57,7 +57,7 @@ Algoritmo - NOT - Método
 
 
 
-Algoritmo - NOT Framework
+Algoritmo - NOT - Framework
 ========================================================
 <font size="5">
 Considerando $\boldsymbol{Y} = (Y_1, \dots ,Y_T)'$, dado por
@@ -68,9 +68,9 @@ Y_t = f_t +\sigma_t \varepsilon_t,  \qquad  t = 1, \dots, T
 
 Onde $f_t$ é o sinal, $\sigma_t$ é o desvio padrão do ruído, $\varepsilon_t$ é o resíduo (nesta etapa considera-se que segue uma distribuição Normal com média 0 e desvio-padrão unitário).
 
-- Assume-se que o par $f_t$ e $\sigma_t$ pode ser particionado em $q+1$ segmentos, onde $q$ é o número de pontos de mudança desconhecidos e está entre o início e fim do vetor de observação da série temporal. 
+- Assume-se que o par $f_t$ e $\sigma_t$ pode ser particionado em $q+1$ segmentos, onde $q$ é o número de pontos de mudança desconhecidos e está entre o início e fim do vetor de observação da série temporal ($0 = \tau_0 < \tau_1 < \dots < \tau_q < \tau_{q+1} = T$). 
 
-- Para cada intervalo $j = 1, …, q+1$ gerado pelos segmentos, modela-se parametricamente a subamostra por um vetor de parâmetros *d*-dimensional com valores pertencentes aos reais, onde d é conhecido e geralmente pequeno.
+- Para cada intervalo $j = 1, …, q+1$ gerado pelos segmentos, modela-se parametricamente $\boldsymbol{\Theta_j}$ a subamostra por um vetor de parâmetros *d*-dimensional com valores pertencentes aos reais, onde d é conhecido e geralmente pequeno.
 
 - Requer-se que a distância mínima entre dois pontos de mudança seja $\geqslant d$ por questões de identificação (identifiability). Ex: ao considerar uma função com mais de 3 parâmetros, não será possível estimá-la com um ou dois pontos.
 
@@ -79,3 +79,28 @@ Onde $f_t$ é o sinal, $\sigma_t$ é o desvio padrão do ruído, $\varepsilon_t$
 <!-- ```{r, echo=FALSE} -->
 <!-- plot(cars) -->
 <!-- ``` -->
+
+
+Algoritmo - NOT - Framework
+========================================================
+<font size="5">
+Ou seja, o par $f_t$ e $\sigma_t$ pode ser dividido em $q+1$ segmentos  cada um deles da mesma família paramétrica de estrutura muito mais simples. Exemplos de estruturas (Cenários):
+
+- **(S1) Variância constante, média constante por partes**:
+    $$\sigma_t = \sigma_0 \qquad e \qquad f_t = \theta_j \qquad para \qquad t = \tau_{j-1} +1, \dots, \tau_j$$
+
+-  **(S2) Variância constante, média contínua e linear por partes**:
+    $$ \sigma_t = \sigma_0 \qquad e \qquad f_t = \theta_{j,1} +\theta_{j,2} \qquad  para \qquad t = \tau_{j-1} +1, \dots \tau_j$$
+    com restrições de
+    $$\theta_{j,1}+\theta_{j,2}\tau_j = \theta_{j+1,1}+\theta_{j+1,2} \tau_j \qquad para \qquad j =1, \dots, q$$
+    
+- **(S3) Variância constante, média linear por partes (mas não necessariamente contínua)**:
+$$ \sigma_t = \sigma_0 \qquad e \qquad f_t = \theta_{j,1} +\theta_{j,2} \qquad  para \qquad t = \tau_{j-1} +1, \dots \tau_j$$ e
+$$f_{tau_j} + \theta_{j,2} \neq f_{tau_j+1}$ para $j = 1, \dots, q$$
+
+    
+- **(S4) Variância constante por partes, média constante por partes**:
+$$f_t = \theta_{j,1} \qquad e \qquad \sigma_t = \theta_{j,2} >0 \qquad  para \qquad t = \tau_{j-1} +1, \dots \tau_j$$ 
+
+
+</font>
