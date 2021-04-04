@@ -1,0 +1,17 @@
+library(not)
+
+help('not')
+
+# **** Piecewisce-constant mean with Gaussian noise.
+# *** signal
+
+pcws.const.sig <- c(rep(0, 100), rep(1,100))
+# *** data vector
+set.seed(123456)
+x <- pcws.const.sig + rnorm(100)
+w <- not(x, contrast = "pcwsConstMean") 
+# *** some examples of how the w object can be used
+plot(w)
+names(w)
+head(w$contrasts)
+

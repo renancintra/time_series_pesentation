@@ -132,3 +132,47 @@ Num segundo momento, testa-se todos $R_{ (s_m, e_m] }(\boldsymbol{Y})$ para $m =
 
 
 </font>
+
+
+Algoritmo - NOT - Log-likelihood ratios and contrast functions
+========================================================
+
+<font size="5">
+Em muitas aplicações, o GLR (apresentado anteriormente) pode ser simplificado usando funções contraste sob a hipótese de ruído gaussiano.
+
+- Essas funções contraste envolvem principalmente o produto interno entre os dados e outros vetores determinísticos. Elas facilitam tanto a parte teórica quanto computacional, especialmente se os vetores determinísticos são mutuamente ortonormais. 
+
+Mais precisamente, para cada $(s, e, b)$ com $0 \leq s < e \leq T$, o objetivo é achar $C^{b}_{(s,e]} (\boldsymbol{Y})$ tal que:
+ - $argmax_b C^{b}_{(s,e]} (\boldsymbol{Y}) =  argmax_b R^{b}_{(s,e)}(\boldsymbol{Y})$
+ - O valor assumido pela função contraste $C^{b}_{(s,e]} (\boldsymbol{Y})$ precisa ser pequeno se não houver ponto de mudança no intervalo 
+ - A função contraste $C^{b}_{(s,e]} (\boldsymbol{Y})$ consiste principalmente no produto interno entre os dados e os vetores de contraste 
+
+</font>
+
+
+Algoritmo - NOT - Pseudocódigo
+========================================================
+<center>
+![Pseudocódigo NOT.](imagens/pseudcodigo.JPG) 
+</center>
+
+
+Exemplo -  NOT
+========================================================
+<font size="5">
+
+```r
+library(not)
+pcws.const.sig <- c(rep(0, 100), rep(1,100))
+# *** data vector
+set.seed(123456)
+x <- pcws.const.sig + rnorm(100)
+w <- not(x, contrast = "pcwsConstMean") 
+# *** some examples of how the w object can be used
+plot(w)
+```
+
+<img src="Series Temporais-figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
+
+
+</font>
