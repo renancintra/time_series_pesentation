@@ -179,12 +179,15 @@ Dessa forma, os autores, num artigo suplementar, desenvolvem um Algortimo 2, par
 Algoritmo - NOT - Choice via sSIC
 ========================================================
 
-Uma vez construído a coleção de candidatos de modelos a ser usados, os autores propõem a minimização da função Schwarz Information Criterion(sSIC) como critério de escolha do modelo utilizado. Defindo por:
+Uma vez construída a coleção de candidatos de modelos a ser usados, os autores propõem a minimização da função Schwarz Information Criterion(sSIC) como critério de escolha do modelo utilizado. Defindo por:
 
 $$
-sSIC(k) = - 2 \sum^{\hat{q}_k+1}_{j=1} log \ell (Y_{\hat{\tau}_{j-1}+1},\dots,Y_{\hat{tau}_j}; \hat{\Theta}_j)+n_klog^{\alpha}(T)
+sSIC(k) = - 2 \sum^{\hat{q}_k+1}_{j=1} log \ell (Y_{\hat{\tau}_{j-1}+1},\dots,Y_{\hat{\tau}_j}; \hat{\Theta}_j)+n_klog^{\alpha}(T)
 $$
 
+
+onde $k = 1,\dots, N$, $\hat{q}_k= |\tau(\zeta^k_T)|$;
+$\hat{\Theta}_1, \dots, \hat{\Theta}_{\hat{q}_k+1}$ os estimadores de máxima verossimilhança; $n_k$ o número total de parâmetros estimados; $\alpha \leq 1$; e $\hat{\tau}_{\hat{q}_k+1}=T$.
 
 Exemplo -  NOT - Cenário 1
 ========================================================
