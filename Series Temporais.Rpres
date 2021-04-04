@@ -83,7 +83,7 @@ Onde $f_t$ é o sinal, $\sigma_t$ é o desvio padrão do ruído, $\varepsilon_t$
 
 Algoritmo - NOT - Framework
 ========================================================
-<font size="5">
+<font size="4">
 Ou seja, o par $f_t$ e $\sigma_t$ pode ser dividido em $q+1$ segmentos  cada um deles da mesma família paramétrica de estrutura muito mais simples. Exemplos de estruturas (Cenários):
 
 - **(S1) Variância constante, média constante por partes**:
@@ -101,6 +101,34 @@ $$f_{tau_j} + \theta_{j,2} \neq f_{tau_j+1}$ para $j = 1, \dots, q$$
     
 - **(S4) Variância constante por partes, média constante por partes**:
 $$f_t = \theta_{j,1} \qquad e \qquad \sigma_t = \theta_{j,2} >0 \qquad  para \qquad t = \tau_{j-1} +1, \dots \tau_j$$ 
+
+Obs. Considera-se $\sigma$ conhecido, contudo, caso seja desconhecido, é possível estimá-lo a partir do método MAD( *median absolute deviation*): robusto a pontos de mudanças.
+
+
+</font>
+
+
+Algoritmo - NOT - Main Idea
+========================================================
+<font size="4.5">
+
+ - Formalmente, primeiro, extrai-se aleatoriamente subamostras com índices [s,e] tal que $0 \leqslant s < e \leqslant T$, ou seja, [s,e] não podem ter valores fora dos índices existentes, o início tem que ser inferior ao fim, e, pela condição de identificação, $e - s \geqslant 2d$.
+ 
+- Dada a verossimilhança $\ell(Y_{s+1}, …, Y_e ; \Theta)$, calcula-se a estatística da razão generalizada da log-verossimilhança para todos pontos únicos candidatos dentro do intervalo (s,e) e utiliza o máximo.
+
+- São gerados vários candidatos de "b", que segmentam a subamostra em duas, com a condição de que os pares [s,b] e [e,b] sejam maiores que *d* para poder estimar a verossimilhança.
+
+$$
+R^{b}_{(s,e)}(\boldsymbol{Y}) = 2 log \biggl[ \frac{sup_{\Theta^1, \Theta^2} \{ \ell( Y_{s+1}, \dots ,Y_b; \Theta^1) \ell( Y_{b+1}, \dots ,Y_e; \Theta^2) \}}{sup_{\Theta} \ell( Y_{s+1}, \dots ,Y_b; \Theta)} \biggr]
+$$
+
+
+$$
+R_{(s,e)}(\boldsymbol{Y}) = max_{b \in \{ s+d,\dots,e-d\} } R^{b}_{(s,e)}(\boldsymbol{Y})
+$$
+
+Esse procedimento acima é repetido para todos $M$ pares retirados aleatoriamente $(s_1, e_1), ... , (s_M, e_M)$. 
+Num segundo momento, testa-se todos $R_{ (s_m, e_m] }(\boldsymbol{Y})$ para $m = 1,\dots, M$ contra um determinado *threshold*  $\zeta_{T}$. Dos intervalos significativos, seleciona-se o que possui menor comprimento. 
 
 
 </font>
