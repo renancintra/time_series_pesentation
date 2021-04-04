@@ -41,7 +41,7 @@ Algoritmo - NOT
 
 - Os tipos de mudança considerados a partir de uma descrição paramétrica de $f_t$.
 
-- Num nível mais amplo, propõe-se a ideia de utilizar modelos simples nos subconjuntos da amostra (*local*) e depois agregar os resultados para obeer um ajuste geral (*global*)
+- Num nível mais amplo, propõe-se a ideia de utilizar modelos simples nos subconjuntos da amostra (*local*) e depois agregar os resultados para obter um ajuste geral (*global*)
 
 
 Slide With Plot
