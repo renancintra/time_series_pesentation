@@ -56,6 +56,26 @@ Algoritmo - NOT - Método
 </font>
 
 
+
+Algoritmo - NOT Framework
+========================================================
+<font size="5">
+Considerando $\boldsymbol{Y} = (Y_1, \dots ,Y_T)'$, dado por
+
+\begin{equation}
+Y_t = f_t +\sigma_t \varepsilon_t,  \qquad  t = 1, \dots, T
+\end{equation}
+
+Onde $f_t$ é o sinal, $\sigma_t$ é o desvio padrão do ruído, $\varepsilon_t$ é o resíduo (nesta etapa considera-se que segue uma distribuição Normal com média 0 e desvio-padrão unitário).
+
+- Assume-se que o par $f_t$ e $\sigma_t$ pode ser particionado em $q+1$ segmentos, onde $q$ é o número de pontos de mudança desconhecidos e está entre o início e fim do vetor de observação da série temporal. 
+
+- Para cada intervalo $j = 1, …, q+1$ gerado pelos segmentos, modela-se parametricamente a subamostra por um vetor de parâmetros *d*-dimensional com valores pertencentes aos reais, onde d é conhecido e geralmente pequeno.
+
+- Requer-se que a distância mínima entre dois pontos de mudança seja $\geqslant d$ por questões de identificação (identifiability). Ex: ao considerar uma função com mais de 3 parâmetros, não será possível estimá-la com um ou dois pontos.
+
+</font>
+<!-- ![Resultado Algoritmo WBS.](imagens/imagem_001.JPG) -->
 <!-- ```{r, echo=FALSE} -->
 <!-- plot(cars) -->
 <!-- ``` -->
