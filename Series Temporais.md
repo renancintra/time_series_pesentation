@@ -33,11 +33,15 @@ Algoritmo - NOT
 
 - Parte de um modelo simples para detectar “pontos de mudança” que ocorrem em locais desconhecidos
 
-$$ Y_t = f_t + \epsilon_t,  $$
-$$t = 1, \dots, T$$
+\begin{equation}
+ Y_t = f_t + \varepsilon_t, \qquad  t = 1, \dots, T
+\end{equation}
 
-- A abordagem proposta também permite detectar "features" a partir de aspectos distributivos de $\epsilon_t$  (ex: variância do erro)
+- A abordagem proposta também permite detectar "features" a partir de aspectos distributivos de $\varepsilon_t$  (ex: variância do erro)
 
+- Os tipos de mudança considerados a partir de uma descrição paramétrica de $f_t$.
+
+- Num nível mais amplo, propõe-se a ideia de utilizar modelos simples nos subconjuntos da amostra (*local*) e depois agregar os resultados para obeer um ajuste geral (*global*)
 
 
 Slide With Plot
