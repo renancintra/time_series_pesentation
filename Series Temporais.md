@@ -30,7 +30,7 @@ Organização do Artigo
 
 Algoritmo - NOT - Objetivo
 ========================================================
-
+<font size="4">
 - Parte de um modelo simples para detectar “pontos de mudança” (ou mudanças na descrição paramétrica de uma $f_t$ ) que ocorrem em locais desconhecidos
 
 \begin{equation}
@@ -44,6 +44,9 @@ Algoritmo - NOT - Objetivo
 - Num nível mais amplo, propõe-se a ideia de utilizar modelos simples nos subconjuntos da amostra (*local*) e depois agregar os resultados para obter um ajuste geral (*global*)
 
 
+![Resultados Ilustrativos.](imagens/imagem_ilustracao.JPG) 
+
+</font>
 Algoritmo - NOT - Método
 ========================================================
 <font size="5">
@@ -53,6 +56,7 @@ Algoritmo - NOT - Método
 
 - **Local**: das subamostras retidas, busca-se a que tem o intervalo mais curto (narrowest interval), ou seja, a que tem $e - s$ com menor valor. 
   - Ao detectar uma *feature*, o algoritmo avança recursivamente para “esquerda” e “direita” do ponto e para no intervalo onde não encontra-se nenhum outro intervalo cujo contraste exceda o threshold.
+
 </font>
 
 
@@ -157,18 +161,51 @@ Algoritmo - NOT - Pseudocódigo
 </center>
 
 
-Exemplo -  NOT
+
+Algoritmo - NOT - Solution Path Algorithm
+========================================================
+
+<font size="5">
+Denote-se $\tau(\zeta_T) = \hat{\tau_1} (\zeta_T), \dots, \hat{\tau_1}_{\hat{q} \zeta_T} (\zeta_T)$ os pontos de mudança estimados no algoritmo anterior, com *treshold* $\zeta_T$, e define-se ${\tau(\zeta_T)}_{\zeta_T \leq 0}$ como a  família dos *tresholds* indexiados das soluções. 
+
+Dado que os *tresholds* $\zeta_{T}^{(i)}$ são desconhecidos e variam de acordo com os dados utilizadaos, apenas usando o algoritmo anterior num intervalo pré-determinado não recupera, tipicamente, todo caminho de solução. Ademais, do ponto de vista computacional é ineficiente, visto que as soluções para $\zeta^{(i)}_T$ e $\zeta^{(i + 1)}_T$ são muito parecidas para muitos *i's*.
+
+Dessa forma, os autores, num artigo suplementar, desenvolvem um Algortimo 2, para  usar a informação de $\tau(\zeta^{(i)}_T)$ para calcular tanto $\zeta^{i+1}_T$ e $\tau(\zeta^{i+1}_T)$ iterativamente para todo $i =, \dots, N-1$.
+
+</font>
+
+
+
+Algoritmo - NOT - Choice via sSIC
+========================================================
+
+Uma vez construído a coleção de candidatos de modelos a ser usados, os autores propõem a minimização da função Schwarz Information Criterion(sSIC) como critério de escolha do modelo utilizado. Defindo por:
+
+$$
+sSIC(k) = - 2 \sum^{\hat{q}_k+1}_{j=1} log \ell (Y_{\hat{\tau}_{j-1}+1},\dots,Y_{\hat{tau}_j}; \hat{\Theta}_j)+n_klog^{\alpha}(T)
+$$
+
+
+Exemplo -  NOT - Cenário 1
 ========================================================
 <font size="5">
 
 ```r
 library(not)
 pcws.const.sig <- c(rep(0, 100), rep(1,100))
-# *** data vector
+# Cenario 1 . Variancia constante e Media constante nas partes
 set.seed(123456)
 x <- pcws.const.sig + rnorm(100)
 w <- not(x, contrast = "pcwsConstMean") 
-# *** some examples of how the w object can be used
+# onde foi detectado o pulo
+features(w)$cpt
+```
+
+```
+[1] 91
+```
+
+```r
 plot(w)
 ```
 

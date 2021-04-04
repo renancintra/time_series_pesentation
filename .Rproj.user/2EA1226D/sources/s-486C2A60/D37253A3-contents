@@ -14,4 +14,20 @@ w <- not(x, contrast = "pcwsConstMean")
 plot(w)
 names(w)
 head(w$contrasts)
+w
 
+
+
+# **** Piecewisce-constant mean with Gaussian noise.
+# *** signal
+
+pcws.const.sig_2 <- c(rep(0, 100), rep(1,100) ,
+                    rep(2,100))
+# *** data vector
+set.seed(123456)
+x <- pcws.const.sig_2 + rnorm(100)
+w <- not(x, contrast = "pcwsConstMean") 
+# *** some examples of how the w object can be used
+plot(w)
+
+features(w)
