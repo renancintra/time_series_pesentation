@@ -28,10 +28,10 @@ Organização do Artigo
 
 </font>
 
-Algoritmo - NOT
+Algoritmo - NOT - Objetivo
 ========================================================
 
-- Parte de um modelo simples para detectar “pontos de mudança” que ocorrem em locais desconhecidos
+- Parte de um modelo simples para detectar “pontos de mudança” (ou mudanças na descrição paramétrica de uma $f_t$ ) que ocorrem em locais desconhecidos
 
 \begin{equation}
  Y_t = f_t + \varepsilon_t, \qquad  t = 1, \dots, T
@@ -44,9 +44,18 @@ Algoritmo - NOT
 - Num nível mais amplo, propõe-se a ideia de utilizar modelos simples nos subconjuntos da amostra (*local*) e depois agregar os resultados para obter um ajuste geral (*global*)
 
 
-Slide With Plot
+Algoritmo - NOT - Método
 ========================================================
+<font size="5">
+- **Global**: tira-se várias subamostras $Y_{s+1}, \dots, Y_{e}^{'}$, onde $0 \leqslant s < e \leqslant T$ 
+  - Em cada subamostra, assume-se que apenas uma *feature* está presente e emprega-se uma função contraste feita *sob medida* obtida para encontrar o ponto/localização mais provável dessa feature.
+  - Mantém-se as subamostras para qual a função contraste excede um limite (*threshold*) definido pelo usuário e descarta-se as demais.
 
-```{r, echo=FALSE}
-plot(cars)
-```
+- **Local**: das subamostras retidas, busca-se a que tem o intervalo mais curto (narrowest interval), ou seja, a que tem $e - s$ com menor valor. 
+  - Ao detectar uma *feature*, o algoritmo avança recursivamente para “esquerda” e “direita” do ponto e para no intervalo onde não encontra-se nenhum outro intervalo cujo contraste exceda o threshold.
+</font>
+
+
+<!-- ```{r, echo=FALSE} -->
+<!-- plot(cars) -->
+<!-- ``` -->
