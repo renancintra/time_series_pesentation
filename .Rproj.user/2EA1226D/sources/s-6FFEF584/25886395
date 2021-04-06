@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3962671605",
+    "hash" : "0",
     "id" : "25886395",
-    "lastKnownWriteTime" : 1617579353,
-    "last_content_update" : 1617579353045,
+    "lastKnownWriteTime" : 1617669638,
+    "last_content_update" : 1617669638090,
     "path" : "C:/Users/User/Desktop/Series Temporais/Seminario/time_series_pesentation/Series Temporais.Rpres",
     "project_path" : "Series Temporais.Rpres",
     "properties" : {
-        "cursorPosition" : "200,40",
-        "scrollLine" : "190"
+        "cursorPosition" : "254,0",
+        "scrollLine" : "247"
     },
     "relative_order" : 1,
     "source_on_save" : false,

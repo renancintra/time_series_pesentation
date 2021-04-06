@@ -189,9 +189,13 @@ $$
 onde $k = 1,\dots, N$, $\hat{q}_k= |\tau(\zeta^k_T)|$;
 $\hat{\Theta}_1, \dots, \hat{\Theta}_{\hat{q}_k+1}$ os estimadores de máxima verossimilhança; $n_k$ o número total de parâmetros estimados; $\alpha \leq 1$; e $\hat{\tau}_{\hat{q}_k+1}=T$.
 
+
 Exemplo -  NOT - Cenário 1
 ========================================================
+
+
 <font size="5">
+
 ```{r echo=TRUE,  fig.height = 4, fig.width = 6, fig.align='center'}
 library(not)
 pcws.const.sig <- c(rep(0, 100), rep(1,100))
@@ -203,6 +207,76 @@ w <- not(x, contrast = "pcwsConstMean")
 features(w)$cpt
 plot(w)
 ```
+
+
+</font>
+
+
+Exemplo -  NOT - Aplicação
+========================================================
+
+
+<font size="5">
+
+Wrangling
+
+
+```{r echo=TRUE,  fig.height = 4, fig.width = 6, fig.align='center'}
+library(covid19br)
+library(tidyverse)
+
+db_rs_covid <- downloadCovid19(level = "states") %>% 
+  filter(state =='RS')
+
+
+db_lag<-
+  db_rs_covid %>% 
+  dplyr::select(
+  date,
+  newDeaths) %>% 
+  # media movel para tirar a sazonalidade dos registros
+  dplyr::mutate( 
+    death_14da = zoo::rollmean(newDeaths, k = 14, fill =NA, align = "right")
+    ) %>% 
+  dplyr::mutate(death_lag_14 = lag(death_14da, 14),
+                date_lag_14  = lag(death_14da, 14)
+                ) %>% 
+  # calculo da proporcao referente a  media de 14 dias antes
+  dplyr::mutate(
+    death_prop = (death_14da/death_lag_14)-1
+  ) %>% 
+  filter(!is.infinite(death_prop)) %>% 
+  filter(!is.nan(death_prop)) %>% 
+  filter(!is.na(death_prop)) %>% 
+  # soh no ultimo ano
+  filter(date >= '2020-04-07')
+
+```
+
+</font>
+
+
+Exemplo -  NOT - Aplicado
+========================================================
+  
+  
+<font size="3">
+  
+```{r echo=TRUE,  fig.height = 5, fig.width = 7, fig.align='center'}
+set.seed(123456)
+w<-not(db_lag$death_prop,
+       method = 'not',
+       contrast = "pcwsConstMeanVar",
+       M= 1000)
+
+db_lag[features(w)$cpt,]
+plot(w)
+
+```
+
+<!-- ```{r, echo=FALSE, fig.align='center',fig.height = 3, fig.width = 3} -->
+<!-- include_graphics("imagens/plot_gerado.JPG") -->
+<!-- ``` -->
 
 
 </font>

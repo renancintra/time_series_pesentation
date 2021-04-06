@@ -1,0 +1,75 @@
+library(not)
+
+help('not')
+
+# **** Piecewisce-constant mean with Gaussian noise.
+# *** signal
+
+pcws.const.sig <- c(rep(0, 100), rep(1,100))
+# *** data vector
+set.seed(123456)
+x <- pcws.const.sig + rnorm(100)
+w <- not(x, contrast = "pcwsConstMean") 
+# *** some examples of how the w object can be used
+plot(w)
+names(w)
+head(w$contrasts)
+w
+
+
+
+# **** Piecewisce-constant mean with Gaussian noise.
+# *** signal
+
+pcws.const.sig_2 <- c(rep(0, 100), rep(1,100) ,
+                    rep(2,100))
+# *** data vector
+set.seed(123456)
+x <- pcws.const.sig_2 + rnorm(100)
+w <- not(x, contrast = "pcwsConstMean") 
+# *** some examples of how the w object can be used
+plot(w)
+
+features(w)
+
+
+library(covid19br)
+library(tidyverse)
+library(not)
+
+db_rs_covid <- downloadCovid19(level = "states") %>% 
+  filter(state =='RS')
+  
+db_lag<-
+  db_rs_covid %>% 
+  dplyr::select(
+  date,
+  newDeaths) %>% 
+  # media movel para tirar a sazonalidade dos registros
+  dplyr::mutate( 
+    death_14da = zoo::rollmean(newDeaths, k = 14, fill =NA, align = "right")
+    ) %>% 
+  dplyr::mutate(death_lag_14 = lag(death_14da, 14),
+                date_lag_14  = lag(death_14da, 14)
+                ) %>% 
+  # calculo da proporcao referente a  media de 14 dias antes
+  dplyr::mutate(
+    death_prop = (death_14da/death_lag_14)-1
+  ) %>% 
+  filter(!is.infinite(death_prop)) %>% 
+  filter(!is.nan(death_prop)) %>% 
+  filter(!is.na(death_prop)) %>% 
+  # soh no ultimo ano
+  filter(date >= '2020-04-07')
+
+
+plot.ts(db_lag$death_prop)
+set.seed(123456)
+w<-not(db_lag$death_prop,
+       method = 'not',
+       contrast = "pcwsConstMeanVar",
+       M= 1000)
+
+names(plot(w))
+db_lag[features(w)$cpt,]
+

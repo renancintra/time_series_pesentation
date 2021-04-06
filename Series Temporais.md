@@ -189,9 +189,13 @@ $$
 onde $k = 1,\dots, N$, $\hat{q}_k= |\tau(\zeta^k_T)|$;
 $\hat{\Theta}_1, \dots, \hat{\Theta}_{\hat{q}_k+1}$ os estimadores de máxima verossimilhança; $n_k$ o número total de parâmetros estimados; $\alpha \leq 1$; e $\hat{\tau}_{\hat{q}_k+1}=T$.
 
+
 Exemplo -  NOT - Cenário 1
 ========================================================
+
+
 <font size="5">
+
 
 ```r
 library(not)
@@ -213,6 +217,106 @@ plot(w)
 ```
 
 <img src="Series Temporais-figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
+
+
+</font>
+
+
+Exemplo -  NOT - Aplicação
+========================================================
+
+
+<font size="5">
+
+Wrangling
+
+
+
+```r
+library(covid19br)
+library(tidyverse)
+
+db_rs_covid <- downloadCovid19(level = "states") %>% 
+  filter(state =='RS')
+
+
+db_lag<-
+  db_rs_covid %>% 
+  dplyr::select(
+  date,
+  newDeaths) %>% 
+  # media movel para tirar a sazonalidade dos registros
+  dplyr::mutate( 
+    death_14da = zoo::rollmean(newDeaths, k = 14, fill =NA, align = "right")
+    ) %>% 
+  dplyr::mutate(death_lag_14 = lag(death_14da, 14),
+                date_lag_14  = lag(death_14da, 14)
+                ) %>% 
+  # calculo da proporcao referente a  media de 14 dias antes
+  dplyr::mutate(
+    death_prop = (death_14da/death_lag_14)-1
+  ) %>% 
+  filter(!is.infinite(death_prop)) %>% 
+  filter(!is.nan(death_prop)) %>% 
+  filter(!is.na(death_prop)) %>% 
+  # soh no ultimo ano
+  filter(date >= '2020-04-07')
+```
+
+</font>
+
+
+Exemplo -  NOT - Aplicado
+========================================================
+  
+  
+<font size="3">
+  
+
+```r
+set.seed(123456)
+w<-not(db_lag$death_prop,
+       method = 'not',
+       contrast = "pcwsConstMeanVar",
+       M= 1000)
+
+db_lag[features(w)$cpt,]
+```
+
+```
+# A tibble: 13 x 6
+   date       newDeaths death_14da death_lag_14 date_lag_14 death_prop
+   <date>         <int>      <dbl>        <dbl>       <dbl>      <dbl>
+ 1 2020-04-13         0      0.929        0.214       0.214     3.33  
+ 2 2020-05-17        10      5.5          2.93        2.93      0.878 
+ 3 2020-06-21         4     10.6          7.57        7.57      0.396 
+ 4 2020-07-22        48     40.9         23.2        23.2       0.760 
+ 5 2020-08-14        47     53.9         50.7        50.7       0.0634
+ 6 2020-09-24        29     43.9         46.7        46.7      -0.0596
+ 7 2020-10-25         0     31.4         36.7        36.7      -0.144 
+ 8 2020-11-16        24     31.3         29.8        29.8       0.0504
+ 9 2020-12-25        31     65.8         56.3        56.3       0.169 
+10 2021-01-22        45     63           66.1        66.1      -0.0465
+11 2021-02-17        72     46.6         50.2        50.2      -0.0711
+12 2021-03-01        78     77.4         48          48         0.612 
+13 2021-03-23       342    262.         136.        136.        0.922 
+```
+
+```r
+plot(w)
+```
+
+<img src="Series Temporais-figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+
+```
+Press [enter] to continue
+```
+
+<img src="Series Temporais-figure/unnamed-chunk-3-2.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+
+<!-- ```{r, echo=FALSE, fig.align='center',fig.height = 3, fig.width = 3} -->
+<!-- include_graphics("imagens/plot_gerado.JPG") -->
+<!-- ``` -->
 
 
 </font>
